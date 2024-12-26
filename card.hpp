@@ -1,10 +1,14 @@
-#include <iostream>
-#include <vector>
+#ifndef CARD_H
+#define CARD_H
 
-enum Card_suite {Spade = 0, Hearts = 1, Diamond = 2, Club = 3};
+#include "iostream"
+
+enum Card_Suite {Spade = 0, Heart = 1, Diamond = 2, Club = 3};
 
 struct Card
 {
-    Card_suite suit;
+    Card_Suite suit;
     char value;
 };
+
+#endif

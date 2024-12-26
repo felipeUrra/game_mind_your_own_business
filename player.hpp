@@ -1,9 +1,16 @@
-#include <hand.hpp>
+#ifndef PLAYER_H
+#define PLAYER_H
+
+#include "card.hpp"
+
+#include <vector>
 
 enum Type {player = 0, pc = 1};
 
 struct Player
 {
-    Hand hand;
+    std::vector<Card> hand;
     Type type;
 };
+
+#endif
