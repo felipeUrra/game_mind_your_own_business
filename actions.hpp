@@ -12,12 +12,13 @@
 void create_deck(int initial_deck_size, char card_values[], Deck &deck);
 void shuffle(Deck &deck);
 void deal(Deck deck, Player players[]);
-void draw(Deck deck, Player player);
+void draw(Deck deck, Player &active_player);
 
 // players
-void ask(char value, Player_Type type);
+void ask(char asdked_value, Player &unactive_player, Player &active_player);
 
 // auxiliar functions
-Player get_who_is_playing(Player players[], int active_turn);
+Player get_active_player(Player players[], int active_turn);
+Player get_unactive_player(Player players[], Player &active_player);
 
 #endif

@@ -74,19 +74,45 @@ void deal(Deck deck, Player players[])
     } 
 }
 
-void draw(Deck deck, Player player)
+void draw(Deck deck, Player &active_player)
 {
-    player.hand.push_back(deck.cards[deck.cards.size() - 1]);
+    active_player.hand.push_back(deck.cards[deck.cards.size() - 1]);
     deck.cards.pop_back();
 }
 
-Player get_who_is_playing(Player players[], int active_turn)
+void ask(char asked_value, Player &unactive_player, Player &active_player)
 {
-    if (active_turn == 0)
+    unsigned int amount_of_cards_unactive_player = unactive_player.hand.size() - 1;
+        
+
+    for (size_t i = 0; i < amount_of_cards_unactive_player; i++)
+    {
+        if (unactive_player.hand[i].value == asked_value)
+        {
+            auto asked_card_index = unactive_player.hand.begin() + i;
+
+            active_player.hand.push_back(unactive_player.hand[i]);
+            unactive_player.hand.erase(asked_card_index);
+        } 
+    }
+}
+
+Player get_active_player(Player players[], int active_turn)
+{
+    if (active_turn == players[0].type)
     {
         return players[0];
     }
 
     return players[1];
-    
+}
+
+Player get_unactive_player(Player players[], Player &active_player)
+{
+    if (active_player.type == 0)
+    {
+        return players[1];
+    }
+
+    return players[0];
 }
