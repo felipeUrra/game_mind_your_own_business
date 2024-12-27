@@ -5,12 +5,12 @@
 
 #include <vector>
 
-enum Type {player = 0, pc = 1};
+enum Player_Type {player = 0, pc = 1};
 
 struct Player
 {
     std::vector<Card> hand;
-    Type type;
+    Player_Type type;
 };
 
 #endif

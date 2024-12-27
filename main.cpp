@@ -7,5 +7,7 @@ int main()
 
    Deck deck;
    create_deck(initial_deck_size, card_values, deck);
-   shuffle(deck); 
+   shuffle(deck);
+
+   int active_turn = Player_Type::player;
 }

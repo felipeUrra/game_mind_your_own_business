@@ -1,5 +1,4 @@
 #include "actions.hpp"
-#include "auxiliarFunctions.hpp"
 
 void create_deck(int initial_deck_size, char card_values[], Deck &deck)
 {
@@ -38,15 +37,15 @@ void create_deck(int initial_deck_size, char card_values[], Deck &deck)
     }   
 }
 
-void shuffle(Deck & deck)
+void shuffle(Deck &deck)
 {
     srand(time(0));
 
     for (size_t i = 0; i < deck.cards.size(); i++)
     {
-        int random_number1 = get_random_number(deck.cards.size());
+        int random_number1 = rand() % deck.cards.size();
 
-        int random_number2 = get_random_number(deck.cards.size());
+        int random_number2 = rand() % deck.cards.size();
 
         Card auxiliar_card = deck.cards[random_number1];
         deck.cards[random_number1] = deck.cards[random_number2];
@@ -75,8 +74,19 @@ void deal(Deck deck, Player players[])
     } 
 }
 
-// auxiliar functions
-int get_random_number(int limit)
+void draw(Deck deck, Player player)
 {
-    return rand() % limit;
+    player.hand.push_back(deck.cards[deck.cards.size() - 1]);
+    deck.cards.pop_back();
+}
+
+Player get_who_is_playing(Player players[], int active_turn)
+{
+    if (active_turn == 0)
+    {
+        return players[0];
+    }
+
+    return players[1];
+    
 }
