@@ -53,13 +53,13 @@ void shuffle(Deck &deck)
     } 
 }
 
-void deal(Deck deck, Player players[])
+void deal(Deck &deck, Player players[])
 {
-    const unsigned int amount_of_cards_per_player = 6;
+    const unsigned int INITIAL_CARDS_PER_PLAYER = 6;
     unsigned int count1 = 0;
     unsigned int count2 = 0;
 
-    for (size_t i = 2; i < (amount_of_cards_per_player * 2) + 2; i++)
+    for (size_t i = 2; i < (INITIAL_CARDS_PER_PLAYER * 2) + 2; i++)
     {
         if (i % 2 == 0)
         {
@@ -74,27 +74,28 @@ void deal(Deck deck, Player players[])
     } 
 }
 
-void draw(Deck deck, Player &active_player)
+bool draw(Deck &deck, Player &active_player , char asked_value)
 {
     active_player.hand.push_back(deck.cards[deck.cards.size() - 1]);
     deck.cards.pop_back();
+
+    return is_drawn_card_equal_to_asked_one(active_player, asked_value);
 }
 
-void ask(char asked_value, Player &unactive_player, Player &active_player)
+bool ask(Player &active_player, Player &unactive_player, Deck &deck, char asked_value)
 {
-    unsigned int amount_of_cards_unactive_player = unactive_player.hand.size() - 1;
-        
+    // the comprobation to see if the the asked card is in the active player's hand will be in the main
+    size_t asked_card_index;
 
-    for (size_t i = 0; i < amount_of_cards_unactive_player; i++)
+    if (is_asked_card_in_the_opponent_hand(active_player, unactive_player, asked_value, asked_card_index))
     {
-        if (unactive_player.hand[i].value == asked_value)
-        {
-            auto asked_card_index = unactive_player.hand.begin() + i;
+        active_player.hand.push_back(unactive_player.hand[asked_card_index]);
+        unactive_player.hand.erase(unactive_player.hand.begin() + asked_card_index);
 
-            active_player.hand.push_back(unactive_player.hand[i]);
-            unactive_player.hand.erase(asked_card_index);
-        } 
+        return true;
     }
+    
+    return draw(deck, active_player, asked_value);
 }
 
 Player get_active_player(Player players[], int active_turn)
@@ -115,4 +116,41 @@ Player get_unactive_player(Player players[], Player &active_player)
     }
 
     return players[0];
+}
+
+bool is_asked_card_in_the_player_hand(Player &player, char asked_value)
+{
+    for (size_t i = 0; i < player.hand.size(); i++)
+    {
+        if (player.hand[i].value == asked_value)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool is_asked_card_in_the_opponent_hand(Player &active_player, Player &unactive_player, char asked_value, size_t &asked_card_index)
+{
+    for (size_t i = 0; i < unactive_player.hand.size(); i++)
+    {
+        if (unactive_player.hand[i].value == asked_value)
+        {
+            asked_card_index = i;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool is_drawn_card_equal_to_asked_one(Player &player, char asked_value)
+{
+    if (player.hand.back().value == asked_value)
+    {
+        return true;
+    }
+
+    return false;
 }
