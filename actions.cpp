@@ -2,7 +2,7 @@
 
 void create_deck(int initial_deck_size, std::string card_values[], Deck &deck)
 {
-    unsigned int count = 0;
+    //unsigned int count = 0;
 
     for (size_t i = 0; i < 4; i++)
     {
@@ -32,7 +32,7 @@ void create_deck(int initial_deck_size, std::string card_values[], Deck &deck)
                 break;
             }
 
-            deck.cards[count++] = card;
+            deck.cards.push_back(card);
         }     
     }   
 }
@@ -63,12 +63,12 @@ void deal(Deck &deck, Player players[])
     {
         if (i % 2 == 0)
         {
-            players[0].hand[count1++] = deck.cards[deck.cards.size() - 1];
+            players[0].hand.push_back(deck.cards[deck.cards.size() - 1]);
             deck.cards.pop_back();
         }
         else
         {
-            players[1].hand[count2++] = deck.cards[deck.cards.size() - 1];
+            players[1].hand.push_back(deck.cards[deck.cards.size() - 1]);
             deck.cards.pop_back();
         }   
     } 

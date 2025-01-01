@@ -11,4 +11,6 @@ int main()
    shuffle(deck);
 
    int active_turn = Player_Type::player;
+
+   print_main_menu();
 }
