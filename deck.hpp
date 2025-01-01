@@ -3,6 +3,8 @@
 
 #include "card.hpp"
 
+#include <vector>
+
 struct Deck
 {
     std::vector<Card> cards;

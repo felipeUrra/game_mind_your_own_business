@@ -1,6 +1,6 @@
 #include "actions.hpp"
 
-void create_deck(int initial_deck_size, char card_values[], Deck &deck)
+void create_deck(int initial_deck_size, std::string card_values[], Deck &deck)
 {
     unsigned int count = 0;
 
@@ -74,7 +74,7 @@ void deal(Deck &deck, Player players[])
     } 
 }
 
-bool draw(Deck &deck, Player &active_player , char asked_value)
+bool draw(Deck &deck, Player &active_player, std::string asked_value)
 {
     active_player.hand.push_back(deck.cards[deck.cards.size() - 1]);
     deck.cards.pop_back();
@@ -82,7 +82,7 @@ bool draw(Deck &deck, Player &active_player , char asked_value)
     return is_drawn_card_equal_to_asked_one(active_player, asked_value);
 }
 
-bool ask(Player &active_player, Player &unactive_player, Deck &deck, char asked_value)
+bool ask(Player &active_player, Player &unactive_player, Deck &deck, std::string asked_value)
 {
     // the comprobation to see if the the asked card is in the active player's hand will be in the main
     size_t asked_card_index;
@@ -118,11 +118,11 @@ Player get_unactive_player(Player players[], Player &active_player)
     return players[0];
 }
 
-bool is_asked_card_in_the_player_hand(Player &player, char asked_value)
+bool is_asked_card_in_the_player_hand(Player &player, std::string asked_value)
 {
     for (size_t i = 0; i < player.hand.size(); i++)
     {
-        if (player.hand[i].value == asked_value)
+        if (player.hand[i].value.compare(asked_value))
         {
             return true;
         }
@@ -131,11 +131,11 @@ bool is_asked_card_in_the_player_hand(Player &player, char asked_value)
     return false;
 }
 
-bool is_asked_card_in_the_opponent_hand(Player &active_player, Player &unactive_player, char asked_value, size_t &asked_card_index)
+bool is_asked_card_in_the_opponent_hand(Player &active_player, Player &unactive_player, std::string asked_value, size_t &asked_card_index)
 {
     for (size_t i = 0; i < unactive_player.hand.size(); i++)
     {
-        if (unactive_player.hand[i].value == asked_value)
+        if (unactive_player.hand[i].value.compare(asked_value))
         {
             asked_card_index = i;
             return true;
@@ -145,12 +145,22 @@ bool is_asked_card_in_the_opponent_hand(Player &active_player, Player &unactive_
     return false;
 }
 
-bool is_drawn_card_equal_to_asked_one(Player &player, char asked_value)
+bool is_drawn_card_equal_to_asked_one(Player &player, std::string asked_value)
 {
-    if (player.hand.back().value == asked_value)
+    if (player.hand.back().value.compare(asked_value))
     {
         return true;
     }
 
     return false;
+}
+
+bool is_deck_empty(Deck &deck)
+{
+    if (deck.cards.size() == 0)
+    {
+        return true;
+    }
+
+    return false; 
 }
