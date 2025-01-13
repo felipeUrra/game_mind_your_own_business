@@ -10,7 +10,7 @@ enum Player_Type {player = 0, pc = 1};
 struct Player
 {
     std::vector<Card> hand;
-    Deck fullSets;
+    Deck full_sets;
     Player_Type type;
 };
 

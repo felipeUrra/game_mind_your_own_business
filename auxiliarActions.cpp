@@ -47,6 +47,37 @@ bool is_asked_card_in_the_opponent_hand(Player &active_player, Player &unactive_
     return false;
 }
 
+bool is_asked_set_in_the_opponent_hand(Player &active_player, Player &unactive_player, std::string set, size_t &set_index)
+{
+    for (size_t i = 0; i < unactive_player.full_sets.cards.size(); i += 4)
+    {
+        if (unactive_player.full_sets.cards[i].value.compare(set))
+        {
+            set_index = i;
+            return true;
+        }
+    }
+
+    return false;
+    
+}
+
+bool is_full_set_in_hand(Player &player, std::string asked_value)
+{
+    int count = 0;
+
+    for (size_t i = 0; i < player.hand.size(); i++)
+    {
+        if (player.hand[i].value.compare(asked_value) && ++count <= 4)
+        {
+            return true;
+        }
+    }
+
+    return false;
+    
+}
+
 bool is_drawn_card_equal_to_asked_one(Player &player, std::string asked_value)
 {
     if (player.hand.back().value.compare(asked_value))

@@ -17,6 +17,8 @@ bool draw(Deck &deck, Player &active_player, std::string askedValue);
 
 // players
 bool ask(Player &active_player, Player &unactive_player, Deck &deck, std::string asked_value);
+bool ask(Player &active_player, Player &unactice_player, std::string asked_set); //asking for a set
+void save_full_set(Player &player, std::string set_value);
 
 // auxiliar functions
 //Player get_active_player(Player players[], int active_turn);

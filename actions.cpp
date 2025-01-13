@@ -98,3 +98,35 @@ bool ask(Player &active_player, Player &unactive_player, Deck &deck, std::string
     return draw(deck, active_player, asked_value);
 }
 
+bool ask(Player &active_player, Player &unactive_player, std::string set)
+{
+    size_t set_index;
+
+    if (is_asked_set_in_the_opponent_hand(active_player, unactive_player, set, set_index))
+    {
+        for (size_t i = set_index; i < set_index + 4; i++)
+        {
+            active_player.full_sets.cards.push_back(unactive_player.full_sets.cards[i]);
+            unactive_player.full_sets.cards.erase(unactive_player.full_sets.cards.begin() + i);
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void save_full_set(Player &player, std::string set_value)
+{
+    int count = 0;
+
+    for (size_t i = 0; i < player.hand.size(); i++)
+    {
+        if (player.hand[i].value.compare(set_value) && ++count <= 4)
+        {
+            player.full_sets.cards.push_back(player.hand[i]);
+            player.hand.erase(player.hand.begin() + i);
+            i--;
+        }
+    }
+}
