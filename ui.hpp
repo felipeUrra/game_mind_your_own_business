@@ -3,9 +3,11 @@
 
 #include <iostream>
 #include <string>
+#include <limits>
 
-enum Options {quit = 0, playAgain = 1};
+enum Options {quit = 0, play = 1};
 
-void print_main_menu();
+int print_main_menu();
+bool is_input_valid(int option);
 
 #endif

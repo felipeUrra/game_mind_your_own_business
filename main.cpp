@@ -11,7 +11,7 @@ int main()
    shuffle(deck);
 
    int active_turn = Player_Type::player;
-   bool action = Options::playAgain;
+   bool action = Options::play;
 
    while (action != Options::quit)
    {
