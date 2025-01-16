@@ -33,13 +33,12 @@ bool is_asked_card_in_the_player_hand(Player &player, std::string asked_value)
     return false;
 }
 
-bool is_asked_card_in_the_opponent_hand(Player &active_player, Player &unactive_player, std::string asked_value, size_t &asked_card_index)
+bool is_asked_card_in_the_opponent_hand(Player &active_player, Player &unactive_player, std::string asked_value)
 {
     for (size_t i = 0; i < unactive_player.hand.size(); i++)
     {
         if (unactive_player.hand[i].value.compare(asked_value))
         {
-            asked_card_index = i;
             return true;
         }
     }

@@ -13,6 +13,7 @@ int print_main_menu()
         << '\n' << "1. Play"
         << '\n' << "0. Exit" << '\n'; 
         std::cin >> option;
+        std::cout << '\n';
 
         if (is_input_valid(option))
         {
@@ -22,6 +23,11 @@ int print_main_menu()
     }
 
     return option;
+}
+
+void print_message(std::string str)
+{
+    std::cout << str;
 }
 
 bool is_input_valid(int option)
@@ -43,4 +49,15 @@ bool is_input_valid(int option)
     }
     
     return true;
+}
+
+Options get_selected_option(int option)
+{
+    if (option == 0)
+    {
+        return Options::quit;
+    }
+    
+    return Options::play;
+    
 }
