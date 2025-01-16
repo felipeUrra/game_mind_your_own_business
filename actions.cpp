@@ -133,16 +133,23 @@ bool ask(Player &active_player, Player &unactive_player, std::string set)
 
     if (is_asked_set_in_the_opponent_hand(active_player, unactive_player, set, set_index))
     {
-        for (size_t i = set_index; i < set_index + 4; i++)
-        {
-            active_player.full_sets.cards.push_back(unactive_player.full_sets.cards[i]);
-            unactive_player.full_sets.cards.erase(unactive_player.full_sets.cards.begin() + i);
-
-            return true;
-        }
+        give(active_player, unactive_player, set, set_index);
+        return true;
     }
 
     return false;
+}
+
+void give(Player &active_player, Player &unactive_player, std::string asked_set, size_t &set_index)
+{
+   for (size_t i = set_index; i < set_index + 4; i++)
+   {
+        active_player.full_sets.cards.push_back(unactive_player.full_sets.cards[i]);
+        unactive_player.full_sets.cards.erase(unactive_player.full_sets.cards.begin() + i);
+        i--;
+   }
+
+    print_message("Give set of " + asked_set + '\n');
 }
 
 void save_full_set(Player &player, std::string set_value)
