@@ -114,6 +114,7 @@ std::string get_suite_of_card(Card card)
         return "club";
         break;
     default:
+        return "none";
         break;
     }
 }

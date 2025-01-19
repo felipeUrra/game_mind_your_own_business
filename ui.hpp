@@ -15,5 +15,6 @@ void print_message(std::string str);
 bool is_input_valid(int option);
 Options get_selected_option(int option);
 void list_cards(Player player);
+void print_turn_info(Player plyr);
 
 #endif

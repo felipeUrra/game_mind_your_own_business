@@ -66,6 +66,20 @@ void list_cards(Player player)
 {
     for (size_t i = 0; i < player.hand.size(); i++)
     {
-        print_message(i + ". " + player.hand[i].value + " " + get_suite_of_card(player.hand[i]));
+        print_message((i + 1) + ". " + player.hand[i].value + " " + get_suite_of_card(player.hand[i]) + '\n' + '\n');
     } 
+}
+
+void print_turn_info(Player player)
+{
+    if (player.type == Player_Type::player)
+    {
+        print_message("Your turn.\n"); // esto podria ir en una funcion.
+        print_message("\nHand:\n"); // con esto
+        list_cards(player);
+    }
+    else
+    {
+        print_message("\nComputer turn.\n");
+    }
 }

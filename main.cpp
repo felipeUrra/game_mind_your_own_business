@@ -3,32 +3,43 @@
 
 int main()
 {
-    std::string card_values[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    int initial_deck_size = 52;
+  std::string card_values[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+  int initial_deck_size = 52;
 
-   int active_turn = Player_Type::player;
-   bool action = Options::play;
+  int active_turn = Player_Type::player;
+  bool action = Options::play;
+   
+  int turn_number = 0;
 
-   while (true)
-   {
-        int option = print_main_menu();
-        action = get_selected_option(option);
+  Player players[2];
+  players[0].type = Player_Type::player;
+  players[1].type = Player_Type::pc;
 
-        if (action == Options::play)
-        {
-          Player players[2];
-          players[0].type = Player_Type::player;
-          players[1].type = Player_Type::pc;
+  while (true)
+  {
+    int option = print_main_menu();
+    action = get_selected_option(option);
 
-
-          Deck deck;
-          create_deck(initial_deck_size, card_values, deck);
-          shuffle(deck);
-          deal(deck, players);
-        }
-        else if (action == Options::quit)
-        {
-          break;
-        }
-   }   
+    if (action == Options::play && turn_number == 0)
+    {
+      Deck deck;
+      create_deck(initial_deck_size, card_values, deck);
+      shuffle(deck);
+      deal(deck, players);
+      turn_number++;
+    }
+    
+    if (action == Options::play && turn_number > 0)
+    {
+      while (active_turn == Player_Type::player)
+      {
+        print_turn_info(players[active_turn]);
+        active_turn = Player_Type::pc;
+      } 
+    }
+    else
+    {
+      break;        
+    }
+  }   
 }
