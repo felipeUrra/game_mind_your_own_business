@@ -61,3 +61,11 @@ Options get_selected_option(int option)
     return Options::play;
     
 }
+
+void list_cards(Player player)
+{
+    for (size_t i = 0; i < player.hand.size(); i++)
+    {
+        print_message(i + ". " + player.hand[i].value + " " + get_suite_of_card(player.hand[i]));
+    } 
+}

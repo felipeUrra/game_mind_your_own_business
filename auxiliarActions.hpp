@@ -15,4 +15,6 @@ bool is_full_set_in_hand(Player &player, std::string asked_value);
 bool is_drawn_card_equal_to_asked_one(Player &player, std::string asked_value);
 bool is_deck_empty(Deck &deck);
 
+std::string get_suite_of_card(Card card);
+
 #endif

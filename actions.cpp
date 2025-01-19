@@ -14,19 +14,19 @@ void create_deck(int initial_deck_size, std::string card_values[], Deck &deck)
             switch (i)
             {
             case Card_Suite::Spade:
-                card.suit = Card_Suite::Spade;
+                card.suite = Card_Suite::Spade;
                 card.value = card_values[j];
                 break;
             case Card_Suite::Heart:
-                card.suit = Card_Suite::Heart;
+                card.suite = Card_Suite::Heart;
                 card.value = card_values[j];
                 break;
             case Card_Suite::Diamond:
-                card.suit = Card_Suite::Diamond;
+                card.suite = Card_Suite::Diamond;
                 card.value = card_values[j];
                 break;
             case Card_Suite::Club:
-                card.suit = Card_Suite::Club;
+                card.suite = Card_Suite::Club;
                 card.value = card_values[j];
                 break;
             default:

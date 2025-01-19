@@ -96,3 +96,24 @@ bool is_deck_empty(Deck &deck)
 
     return false; 
 }
+
+std::string get_suite_of_card(Card card)
+{
+    switch (card.suite)
+    {
+    case 0:
+        return "spade";
+        break;
+    case 1:
+        return "heart";
+        break;
+    case 2:
+        return "diamond";
+        break;
+    case 3:
+        return "club";
+        break;
+    default:
+        break;
+    }
+}
