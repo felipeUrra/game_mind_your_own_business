@@ -5,7 +5,7 @@
 
 #include <vector>
 
-enum Player_Type {player = 0, pc = 1};
+enum Player_Type {human = 0, pc = 1};
 
 struct Player
 {
