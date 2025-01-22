@@ -1,4 +1,6 @@
 #include "ui.hpp"
+#include <thread>
+#include <chrono>
 
 int print_main_menu()
 {
@@ -25,9 +27,10 @@ int print_main_menu()
     return option;
 }
 
-void print_message(std::string str)
+void print_message(std::string str, int seconds_to_wait)
 {
     std::cout << str;
+    std::this_thread::sleep_for(std::chrono::seconds(seconds_to_wait));
 }
 
 bool is_input_valid(int option)
@@ -64,15 +67,17 @@ Options get_selected_option(int option)
 
 void list_cards(Player player)
 {
+    print_message("**********************************\n");
     for (size_t i = 0; i < player.hand.size(); i++)
     {
-        print_message((i + 1) + ". " + player.hand[i].value + " " + get_suite_of_card(player.hand[i]) + '\n' + '\n');
+        print_message(player.hand[i].value + " " + get_suite_of_card(player.hand[i]) + '\n');
+        print_message("**********************************\n");
     } 
 }
 
 void print_turn_info(Player player)
 {
-    if (player.type == Player_Type::player)
+    if (player.type == Player_Type::human)
     {
         print_message("Your turn.\n"); // esto podria ir en una funcion.
         print_message("\nHand:\n"); // con esto
@@ -82,4 +87,9 @@ void print_turn_info(Player player)
     {
         print_message("\nComputer turn.\n");
     }
+}
+
+void clear_screen()
+{
+    std::cout << std::string(100, '\n');
 }
