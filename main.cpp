@@ -1,6 +1,13 @@
 #include "actions.hpp"
 #include "ui.hpp"
 
+// Solution of the project number 8
+// Felipe Urra Rivadeneira
+// 0MI8000066
+// CI
+// compiler: G++
+// Group: 6
+
 int main()
 {
   //std::string card_values[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
