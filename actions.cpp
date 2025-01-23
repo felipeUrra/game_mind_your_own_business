@@ -1,12 +1,19 @@
 #include "actions.hpp"
 #include "ui.hpp"
 
-std::string card_values[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
 bool play_turn_human(Player &player_human, Player &player_pc, Deck &deck)
 {
-    
+
     print_message("Your turn!\n\n");
+
+    if (deck_has_cards(deck) && !player_has_cards(player_human))
+    {
+    // draw_cards_when_no_cards(deck, player_human);
+    draw(deck, player_human, deck.cards.size() >= 5 ? 5 : deck.cards.size());
+    return false;
+    }
+    
     list_cards(player_human);
 
     if (player_has_cards(player_human) && deck_has_cards(deck))
@@ -49,7 +56,7 @@ bool sets_phase_human(Player &player_human, Player &player_pc)
     {
         print_message("Enter the value of the set of cards you want to ask (i.e Q): ");
         std::cin >> asked_set;
-    } while (!is_asked_set_valid(asked_set, card_values));
+    } while (!is_asked_set_valid(asked_set));
     
 
     print_message("Asking computer... \n\n", 2);
@@ -61,6 +68,12 @@ bool sets_phase_human(Player &player_human, Player &player_pc)
 bool play_turn_pc(Player &player_pc, Player &player_human, Deck &deck)
 {
     print_message("Computer's turn!\n\n", 2);
+
+    if (deck_has_cards(deck) && !player_has_cards(player_pc))
+    {
+        draw(deck, player_pc, deck.cards.size() >= 5 ? 5 : deck.cards.size());
+    }
+
     srand(time(0));
 
     if (player_has_cards(player_pc) && deck_has_cards(deck))
@@ -99,7 +112,7 @@ bool sets_phase_pc(Player &player_pc, Player &player_human)
     std::string asked_set;
     int randon_number = rand() % card_values->size();
     asked_set = card_values[randon_number];
-    print_message("The computer asks for the value of " + asked_set + "\n\n", 3);
+    print_message("The computer asks for the set of " + asked_set + "\n\n", 3);
 
     bool set_found = ask_for_set(player_pc, player_human, asked_set);
     
@@ -188,7 +201,7 @@ bool draw(Deck &deck, Player &player, std::string asked_value)
 }
 
 // When a player doesn't have cards, he has to draw 5 cards
-void draw(Deck &deck, Player &player, int amount_of_cards)
+void draw(Deck &deck, Player &player, size_t amount_of_cards)
 {
     for (size_t i = 0; i < amount_of_cards; i++)
     {
@@ -198,16 +211,8 @@ void draw(Deck &deck, Player &player, int amount_of_cards)
         save_full_set(player, player.hand[player.hand.size() - 1].value);
     }
     
-    print_message("Drawing " + (char)amount_of_cards);
-    print_message(" card(s) from the deck...\n\n", 2);
-}
-
-void draw_cards_when_no_cards(Deck &deck, Player &player)
-{
-    if (player_has_cards(player))
-    {
-        draw(deck, player, deck.cards.size() >= 5? 5 : deck.cards.size());
-    }
+    std::string message = "Drawing " + std::to_string(amount_of_cards) + " card(s) from the deck...\n\n";
+    print_message(message, 2);
 }
 
 bool ask_for_card(Player &asking_player, Player &giving_player, Deck &deck, std::string asked_value)
@@ -245,7 +250,7 @@ void give_card(Player &asking_player, Player &giving_player, std::string asked_v
 
 bool ask_for_set(Player &asking_player, Player &giving_player, std::string set)
 {
-    size_t set_index = is_asked_set_in_hand(giving_player, set);
+    size_t set_index = is_asked_set_in_full_sets(giving_player, set);
 
     if (set_index != -1)
     {
@@ -258,13 +263,12 @@ bool ask_for_set(Player &asking_player, Player &giving_player, std::string set)
 
 void give_set(Player &asking_player, Player &giving_player, std::string asked_set, size_t &set_index)
 {
-    print_message("Give set of " + asked_set + '\n');
+    print_message("Giving set of " + asked_set + '\n', 2);
 
-    for (size_t i = set_index; i < set_index + 4; i++)
+    for (size_t i = 0; i < 4; i++)
     {
-        asking_player.full_sets.cards.push_back(giving_player.full_sets.cards[i]);
-        giving_player.full_sets.cards.erase(giving_player.full_sets.cards.begin() + i);
-        i--;
+        asking_player.full_sets.cards.push_back(giving_player.full_sets.cards[set_index]);
+        giving_player.full_sets.cards.erase(giving_player.full_sets.cards.begin() + set_index);
     }
 }
 

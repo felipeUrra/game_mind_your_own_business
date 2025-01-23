@@ -1,6 +1,7 @@
 #include "auxiliarActions.hpp"
 #include <iostream>
 
+std::string card_values[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
 bool is_card_in_hand(Player &player, std::string asked_value)
 {
@@ -15,7 +16,7 @@ bool is_card_in_hand(Player &player, std::string asked_value)
     return false;
 }
 
-int is_asked_set_in_hand(Player &player, std::string set)
+int is_asked_set_in_full_sets(Player &player, std::string set)
 {
     for (size_t i = 0; i < player.full_sets.cards.size(); i += 4)
     {
@@ -56,25 +57,15 @@ bool is_drawn_card_equal_to_asked_one(Player &player, std::string asked_value)
 
 bool deck_has_cards(Deck &deck)
 {
-    if (deck.cards.size() == 0)
-    {
-        return false;
-    }
-
-    return true;
+    return deck.cards.size() > 0;
 }
 
 bool player_has_cards(Player &player)
 {
-    if (player.hand.size() == 0)
-    {
-        return false;
-    }
-    
-    return true;
+    return player.hand.size() > 0;
 }
 
-bool is_asked_set_valid(std::string asked_set, std::string card_values[])
+bool is_asked_set_valid(std::string asked_set)
 {
     for (size_t i = 0; i < card_values->size(); i++)
     {

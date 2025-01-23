@@ -42,22 +42,13 @@ int main()
     bool repeat = false;
     if (is_human_turn)
     {
-      if (deck_has_cards(deck) && !player_has_cards(player_human))
-      {
-        draw_cards_when_no_cards(deck, player_human);
-      }
-
       repeat = play_turn_human(player_human, player_pc, deck);
     }
     else
     {
-      if (deck_has_cards(deck) && !player_has_cards(player_pc))
-      {
-        draw_cards_when_no_cards(deck, player_pc);
-      }
-
       repeat = play_turn_pc(player_pc, player_human, deck);
     }
+    
     print_message("Human cards after round: \n \n");
     list_cards(player_human);
     print_message("Computer cards after round: \n \n");

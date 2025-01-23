@@ -9,7 +9,6 @@
 #include <ctime>
 #include <cstdlib>
 
-extern std::string card_values[13];
 
 // game
 bool play_turn_human(Player &player_human, Player &player_pc, Deck &deck);
@@ -24,8 +23,7 @@ Deck create_deck(int initial_deck_size, std::string card_values[]);
 void shuffle(Deck &deck);
 void deal(Deck &deck, Player &player_human, Player &player_pc);
 bool draw(Deck &deck, Player &player, std::string askedValue);
-void draw(Deck &deck, Player &player, int amount_of_cards);
-void draw_cards_when_no_cards(Deck &deck, Player &active_player);
+void draw(Deck &deck, Player &player, size_t amount_of_cards);
 
 // players
 bool ask_for_card(Player &active_player, Player &unactive_player, Deck &deck, std::string asked_value);
