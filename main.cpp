@@ -1,12 +1,18 @@
+/*
+Solutions to course project # <08>
+Introduction to programming course
+Faculty of Mathematics and Informatics of Sofia University
+Winter semester 2024-2025
+
+@author <Felipe Urra Rivadeneira>
+@idnumber <0MI8000066>
+@compiler <gcc>
+
+<main file>
+*/
+
 #include "actions.hpp"
 #include "ui.hpp"
-
-// Solution of the project number 8
-// Felipe Urra Rivadeneira
-// 0MI8000066
-// CI
-// compiler: G++
-// Group: 6
 
 int main()
 {
