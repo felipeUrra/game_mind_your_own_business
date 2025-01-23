@@ -1,6 +1,4 @@
 #include "ui.hpp"
-#include <thread>
-#include <chrono>
 
 int print_main_menu()
 {

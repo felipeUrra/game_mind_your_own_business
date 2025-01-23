@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <thread>
+#include <chrono>
 
 #include "player.hpp"
 #include "auxiliarActions.hpp"
