@@ -3,7 +3,7 @@
 
 int main()
 {
-  std::string card_values[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+  //std::string card_values[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
   int initial_deck_size = 52;
 
   int active_turn = Player_Type::human;
@@ -42,10 +42,20 @@ int main()
     bool repeat = false;
     if (is_human_turn)
     {
+      if (deck_has_cards(deck) && !player_has_cards(player_human))
+      {
+        draw_cards_when_no_cards(deck, player_human);
+      }
+
       repeat = play_turn_human(player_human, player_pc, deck);
     }
     else
     {
+      if (deck_has_cards(deck) && !player_has_cards(player_pc))
+      {
+        draw_cards_when_no_cards(deck, player_pc);
+      }
+
       repeat = play_turn_pc(player_pc, player_human, deck);
     }
     print_message("Human cards after round: \n \n");

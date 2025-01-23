@@ -5,11 +5,17 @@
 
 
 bool is_card_in_hand(Player &player, std::string asked_value);
-bool is_asked_set_in_hand(Player &player, std::string asked_set, size_t &asked_set_index);
+int is_asked_set_in_hand(Player &player, std::string asked_set);
 
 bool is_full_set_in_hand(Player &player, std::string asked_value);
 
-bool is_deck_empty(Deck &deck);
+bool deck_has_cards(Deck &deck);
+
+bool player_has_cards(Player &player);
+
+bool is_asked_set_valid(std::string asked_set, std::string card_values[]);
+
+bool player_has_sets(Player &player);
 
 std::string get_suite_of_card(Card card);
 

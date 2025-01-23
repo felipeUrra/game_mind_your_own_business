@@ -1,12 +1,30 @@
 #include "actions.hpp"
 #include "ui.hpp"
 
+std::string card_values[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+
 bool play_turn_human(Player &player_human, Player &player_pc, Deck &deck)
 {
     
     print_message("Your turn!\n\n");
     list_cards(player_human);
 
+    if (player_has_cards(player_human) && deck_has_cards(deck))
+    {
+        return cards_phase_human(player_human, player_pc, deck);        
+    } 
+
+    if (!player_has_sets(player_pc))
+    {
+        print_message("You are the winner! Congratulations!\n", 5);
+        exit(1);
+    }
+    
+    return sets_phase_human(player_human, player_pc);
+}
+
+bool cards_phase_human(Player &player_human, Player &player_pc, Deck &deck)
+{
     std::string asked_value;
     do
     {
@@ -21,15 +39,49 @@ bool play_turn_human(Player &player_human, Player &player_pc, Deck &deck)
     save_full_set(player_human, player_human.hand[player_human.hand.size() - 1].value);
 
     return card_found;
+}
 
+bool sets_phase_human(Player &player_human, Player &player_pc)
+{
+    std::string asked_set;
+    
+    do
+    {
+        print_message("Enter the value of the set of cards you want to ask (i.e Q): ");
+        std::cin >> asked_set;
+    } while (!is_asked_set_valid(asked_set, card_values));
+    
+
+    print_message("Asking computer... \n\n", 2);
+    bool set_found = ask_for_set(player_human, player_pc, asked_set);
+
+    return set_found;
 }
 
 bool play_turn_pc(Player &player_pc, Player &player_human, Deck &deck)
 {
     print_message("Computer's turn!\n\n", 2);
-    std::string asked_value;
-    // generate a random index to obtain the asked_value
     srand(time(0));
+
+    if (player_has_cards(player_pc) && deck_has_cards(deck))
+    {    
+        return cards_phase_pc(player_pc, player_human, deck);
+    }
+
+    if (!player_has_sets(player_human))
+    {
+        print_message("Game over! Maybe next time.\n", 5);
+        exit(1);
+    }
+
+    return sets_phase_pc(player_pc, player_human);
+    
+}
+
+bool cards_phase_pc(Player &player_pc, Player &player_human, Deck &deck)
+{
+    // generate a random index to obtain the asked_value 
+    std::string asked_value;
     int random_number = rand() % player_pc.hand.size();
     asked_value = player_pc.hand[random_number].value;
     print_message("The computer asks for the value of " + asked_value + "\n\n", 3);
@@ -40,6 +92,18 @@ bool play_turn_pc(Player &player_pc, Player &player_human, Deck &deck)
     save_full_set(player_pc, player_pc.hand[player_pc.hand.size() - 1].value);
 
     return card_found;
+}
+
+bool sets_phase_pc(Player &player_pc, Player &player_human)
+{
+    std::string asked_set;
+    int randon_number = rand() % card_values->size();
+    asked_set = card_values[randon_number];
+    print_message("The computer asks for the value of " + asked_set + "\n\n", 3);
+
+    bool set_found = ask_for_set(player_pc, player_human, asked_set);
+    
+    return set_found;
 }
 
 Deck create_deck(int initial_deck_size, std::string card_values[])
@@ -114,13 +178,36 @@ void deal(Deck &deck, Player &player_human, Player &player_pc)
     }    
 }
 
-bool draw(Deck &deck, Player &active_player, std::string asked_value)
+bool draw(Deck &deck, Player &player, std::string asked_value)
 {
-    active_player.hand.push_back(deck.cards[deck.cards.size() - 1]);
+    player.hand.push_back(deck.cards[deck.cards.size() - 1]);
     deck.cards.pop_back();
 
     print_message("Drawing a card from the deck...\n\n", 2);
-    return active_player.hand[active_player.hand.size() - 1].value == asked_value;
+    return player.hand[player.hand.size() - 1].value == asked_value;
+}
+
+// When a player doesn't have cards, he has to draw 5 cards
+void draw(Deck &deck, Player &player, int amount_of_cards)
+{
+    for (size_t i = 0; i < amount_of_cards; i++)
+    {
+        player.hand.push_back(deck.cards[deck.cards.size() - 1]);
+        deck.cards.pop_back();
+
+        save_full_set(player, player.hand[player.hand.size() - 1].value);
+    }
+    
+    print_message("Drawing " + (char)amount_of_cards);
+    print_message(" card(s) from the deck...\n\n", 2);
+}
+
+void draw_cards_when_no_cards(Deck &deck, Player &player)
+{
+    if (player_has_cards(player))
+    {
+        draw(deck, player, deck.cards.size() >= 5? 5 : deck.cards.size());
+    }
 }
 
 bool ask_for_card(Player &asking_player, Player &giving_player, Deck &deck, std::string asked_value)
@@ -158,30 +245,25 @@ void give_card(Player &asking_player, Player &giving_player, std::string asked_v
 
 bool ask_for_set(Player &asking_player, Player &giving_player, std::string set)
 {
-    size_t set_index;
+    size_t set_index = is_asked_set_in_hand(giving_player, set);
 
-    if (asking_player.type == Player_Type::pc)
-    {
-        print_message("The computer asks for the set of " + set + "!\n", 3);
-    } 
-
-    if (is_asked_set_in_hand(giving_player, set, set_index))
+    if (set_index != -1)
     {
         give_set(asking_player, giving_player, set, set_index);
         return true;
     }
-
+    
     return false;
 }
 
-void give_set(Player &active_player, Player &unactive_player, std::string asked_set, size_t &set_index)
+void give_set(Player &asking_player, Player &giving_player, std::string asked_set, size_t &set_index)
 {
     print_message("Give set of " + asked_set + '\n');
 
     for (size_t i = set_index; i < set_index + 4; i++)
     {
-        active_player.full_sets.cards.push_back(unactive_player.full_sets.cards[i]);
-        unactive_player.full_sets.cards.erase(unactive_player.full_sets.cards.begin() + i);
+        asking_player.full_sets.cards.push_back(giving_player.full_sets.cards[i]);
+        giving_player.full_sets.cards.erase(giving_player.full_sets.cards.begin() + i);
         i--;
     }
 }
